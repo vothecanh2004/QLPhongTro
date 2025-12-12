@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: qlphongtro-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: qlphongtro
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - qlphongtro-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  qlphongtro-network:
+    driver: bridge
+
