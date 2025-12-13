@@ -10,6 +10,7 @@ import Register from './pages/Register';
 import Profile from './pages/Profile';
 import Favorites from './pages/Favorites';
 import CreateListing from "./pages/CreateListing";
+import Messages from './pages/Messages';
 import RequireAuth from "./components/RequireAuth";
 
 
@@ -34,8 +35,6 @@ function App() {
           <Route path="/listings/:id" element={<ListingDetail />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dang-tin" element={<CreateListing />} />
-
           
           <Route
             path="/profile"
@@ -54,12 +53,22 @@ function App() {
               </ProtectedRoute>
             }
           />
+          
           <Route
-            path="/dang-tin"
+            path="/listings/create"
             element={
-              <RequireAuth>
+              <ProtectedRoute>
                 <CreateListing />
-              </RequireAuth>
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/messages"
+            element={
+              <ProtectedRoute>
+                <Messages />
+              </ProtectedRoute>
             }
           />
         </Routes>

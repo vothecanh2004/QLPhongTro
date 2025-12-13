@@ -8,13 +8,32 @@ export const createListing = async (req, res) => {
     const listingData = {
       ...req.body,
       owner: req.user.id,
-      geo: {
-        type: 'Point',
-        coordinates: [parseFloat(req.body.lng), parseFloat(req.body.lat)]
-      }
     };
 
-    if (req.files) {
+    // Handle amenities - can be array or comma-separated string
+    if (req.body.amenities) {
+      if (Array.isArray(req.body.amenities)) {
+        listingData.amenities = req.body.amenities;
+      } else if (typeof req.body.amenities === 'string') {
+        listingData.amenities = req.body.amenities.split(',').map(a => a.trim());
+      }
+    }
+
+    // Handle geo coordinates - make it optional
+    if (req.body.lat && req.body.lng) {
+      listingData.geo = {
+        type: 'Point',
+        coordinates: [parseFloat(req.body.lng), parseFloat(req.body.lat)]
+      };
+    } else {
+      // Default coordinates (can be improved with geocoding)
+      listingData.geo = {
+        type: 'Point',
+        coordinates: [105.8342, 21.0278] // Default to Hanoi center
+      };
+    }
+
+    if (req.files && req.files.length > 0) {
       listingData.images = req.files.map(file => ({
         url: `/uploads/${file.filename}`,
         publicId: file.filename
@@ -24,7 +43,17 @@ export const createListing = async (req, res) => {
     const listing = await Listing.create(listingData);
     res.status(201).json({ listing });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Create listing error:', error);
+    
+    // Handle validation errors
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({ message: messages.join(', ') });
+    }
+    
+    res.status(500).json({ 
+      message: error.message || 'Đăng tin thất bại. Vui lòng thử lại sau.' 
+    });
   }
 };
 

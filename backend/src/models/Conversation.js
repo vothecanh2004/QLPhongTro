@@ -17,7 +17,11 @@ const conversationSchema = new mongoose.Schema({
   lastMessageAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  pinnedMessages: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Message'
+  }]
 }, {
   timestamps: true
 });
