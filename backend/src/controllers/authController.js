@@ -165,6 +165,25 @@ export const updateProfile = async (req, res) => {
   }
 };
 
+export const uploadAvatar = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+
+    const avatarUrl = `/uploads/${req.file.filename}`;
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { avatar: avatarUrl },
+      { new: true }
+    );
+
+    res.json({ user, avatar: avatarUrl });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const updatePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;

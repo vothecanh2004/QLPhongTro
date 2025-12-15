@@ -6,10 +6,12 @@ import {
   getMe, 
   updateProfile, 
   updatePassword,
-  logout 
+  logout,
+  uploadAvatar
 } from '../controllers/authController.js';
 import { protect } from '../middleware/auth.js';
 import { validate } from '../middleware/validation.js';
+import { upload } from '../middleware/upload.js';
 import { z } from 'zod';
 
 const router = express.Router();
@@ -34,5 +36,6 @@ router.post('/logout', logout);
 router.get('/me', protect, getMe);
 router.put('/profile', protect, updateProfile);
 router.put('/password', protect, updatePassword);
+router.post('/avatar', protect, upload.single('avatar'), uploadAvatar);
 
 export default router;

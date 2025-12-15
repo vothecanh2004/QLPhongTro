@@ -19,6 +19,7 @@ import favoriteRoutes from './routes/favoriteRoutes.js';
 import bookingRoutes from './routes/bookingRoutes.js';
 import chatRoutes from './routes/chatRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import aiRoutes from './routes/aiRoutes.js';
 
 dotenv.config();
 
@@ -103,6 +104,7 @@ app.use('/api/favorites', favoriteRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

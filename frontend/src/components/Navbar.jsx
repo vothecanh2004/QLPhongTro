@@ -86,17 +86,31 @@ export default function Navbar() {
                     onClick={() => setShowMenu(!showMenu)}
                     className="flex items-center space-x-2"
                   >
-                    {user.avatar ? (
-                      <img
-                        src={user.avatar}
-                        alt={user.name}
-                        className="w-10 h-10 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center text-white font-semibold">
-                        {user.name.charAt(0).toUpperCase()}
-                      </div>
-                    )}
+                    {(() => {
+                      let avatarUrl = null;
+                      if (user.avatar) {
+                        if (user.avatar.startsWith('http')) {
+                          avatarUrl = user.avatar;
+                        } else if (user.avatar.startsWith('/uploads/')) {
+                          const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+                          avatarUrl = baseUrl.replace('/api', '') + user.avatar;
+                        } else {
+                          avatarUrl = user.avatar;
+                        }
+                      }
+                      
+                      return avatarUrl ? (
+                        <img
+                          src={avatarUrl}
+                          alt={user.name}
+                          className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 dark:border-gray-700"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center text-white font-semibold">
+                          {user.name.charAt(0).toUpperCase()}
+                        </div>
+                      );
+                    })()}
                   </button>
 
                   <AnimatePresence>

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { useAuthStore } from './store/authStore';
 import Navbar from './components/Navbar';
+import ChatBot from './components/ChatBot';
 import Home from './pages/Home';
 import Listings from './pages/Listings';
 import ListingDetail from './pages/ListingDetail';
@@ -72,6 +73,7 @@ function App() {
             }
           />
         </Routes>
+        <ChatBot />
         <Toaster position="top-right" />
       </div>
     </BrowserRouter>
